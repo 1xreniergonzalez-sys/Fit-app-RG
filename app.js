@@ -1,12 +1,15 @@
-/* ====== NAVEGACIÓN ====== */
+const content = document.getElementById("content");
+
 function go(page) {
-  document.querySelectorAll(".page").forEach(p =>
-    p.classList.add("hidden")
-  );
-  document.getElementById(page).classList.remove("hidden");
+  fetch(`pages/${page}.html`)
+    .then(res => res.text())
+    .then(html => {
+      content.innerHTML = html;
+      if (page === "routine") loadRoutine();
+    });
 }
 
-/* ====== PERFIL ====== */
+// PERFIL
 function saveProfile() {
   const profile = {
     age: age.value,
@@ -14,59 +17,35 @@ function saveProfile() {
     height: height.value,
     goal: goal.value
   };
-
   localStorage.setItem("profile", JSON.stringify(profile));
-  generateRoutine(profile);
+  alert("Perfil guardado");
   go("routine");
 }
 
-/* ====== IA SIMPLE ====== */
-function generateRoutine(profile) {
+// RUTINA
+function loadRoutine() {
+  const profile = JSON.parse(localStorage.getItem("profile"));
+  if (!profile) return;
+
   let routine = [];
-
   if (profile.goal === "volumen") {
-    routine = [
-      "Press banca – 4x8",
-      "Sentadilla – 4x8",
-      "Remo – 3x10",
-      "Curl bíceps – 3x12"
-    ];
+    routine = ["Press banca 4x8", "Sentadilla 4x8"];
   }
-
   if (profile.goal === "definicion") {
-    routine = [
-      "Flexiones – 4x15",
-      "Zancadas – 3x12",
-      "Plancha – 3x30s",
-      "Burpees – 3x10"
-    ];
+    routine = ["Flexiones 4x15", "Plancha 3x30s"];
   }
-
   if (profile.goal === "cardio") {
-    routine = [
-      "Cinta – 20 min",
-      "Saltos – 3x30",
-      "Mountain climbers – 3x20",
-      "Abdominales – 3x15"
-    ];
+    routine = ["Cinta 20min", "Saltos 3x30"];
   }
 
-  renderRoutine(routine);
-}
-
-/* ====== MOSTRAR RUTINA ====== */
-function renderRoutine(list) {
-  routineList.innerHTML = "";
-  list.forEach(ex => {
+  const ul = document.getElementById("routineList");
+  ul.innerHTML = "";
+  routine.forEach(e => {
     const li = document.createElement("li");
-    li.textContent = ex;
-    routineList.appendChild(li);
+    li.textContent = e;
+    ul.appendChild(li);
   });
 }
 
-/* ====== CARGAR PERFIL SI EXISTE ====== */
-const saved = localStorage.getItem("profile");
-if (saved) {
-  generateRoutine(JSON.parse(saved));
-  homeText.textContent = "Rutina cargada automáticamente";
-}
+// CARGA INICIAL
+go("home");
