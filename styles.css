@@ -5,7 +5,7 @@
 
 body {
   margin: 0;
-  background: #f4f6f8;
+  background: #f2f4f6;
   color: #222;
 }
 
@@ -18,9 +18,9 @@ body {
 
 nav {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
   justify-content: center;
-  margin-top: 10px;
 }
 
 nav button {
@@ -28,9 +28,7 @@ nav button {
   border: none;
   border-radius: 6px;
   background: #2ecc71;
-  color: #000;
   font-weight: bold;
-  cursor: pointer;
 }
 
 main {
@@ -39,15 +37,20 @@ main {
 
 input, select, button {
   width: 100%;
-  margin: 10px 0;
   padding: 12px;
-  font-size: 16px;
+  margin: 8px 0;
 }
 
-ul {
-  padding-left: 20px;
+.exercise {
+  background: #fff;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
 }
 
-li {
-  margin-bottom: 10px;
+.exercise img {
+  width: 100%;
+  max-width: 320px;
+  display: block;
+  margin: 10px auto;
 }
