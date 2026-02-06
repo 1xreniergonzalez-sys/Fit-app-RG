@@ -5,9 +5,8 @@
   <title>FIT·AI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#22c55e">
   <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
 </head>
 
 <body>
@@ -21,39 +20,9 @@
   </nav>
 </header>
 
-<main>
-
-  <!-- INICIO -->
-  <section id="home" class="page">
-    <h2>Entrenador inteligente</h2>
-    <p id="homeText">Configura tu perfil para empezar</p>
-  </section>
-
-  <!-- PERFIL -->
-  <section id="profile" class="page hidden">
-    <h2>Tu perfil</h2>
-
-    <input id="age" type="number" placeholder="Edad">
-    <input id="weight" type="number" placeholder="Peso (kg)">
-    <input id="height" type="number" placeholder="Estatura (cm)">
-
-    <select id="goal">
-      <option value="volumen">Volumen</option>
-      <option value="definicion">Definición</option>
-      <option value="cardio">Cardio</option>
-    </select>
-
-    <button onclick="saveProfile()">Guardar perfil</button>
-  </section>
-
-  <!-- RUTINA -->
-  <section id="routine" class="page hidden">
-    <h2>Rutina sugerida</h2>
-    <ul id="routineList"></ul>
-  </section>
-
+<main id="content">
+  <!-- Aquí se cargan las páginas -->
 </main>
 
-<script src="app.js"></script>
 </body>
 </html>
