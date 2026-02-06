@@ -16,15 +16,47 @@ function go(page) {
 /* ===== PERFIL ===== */
 function saveProfile() {
   const profile = {
-    age: document.getElementById("age").value,
-    weight: document.getElementById("weight").value,
-    height: document.getElementById("height").value,
+    age: Number(document.getElementById("age").value),
+    weight: Number(document.getElementById("weight").value),
+    height: Number(document.getElementById("height").value),
     goal: document.getElementById("goal").value
   };
 
   localStorage.setItem("profile", JSON.stringify(profile));
   alert("Perfil guardado");
   go("routine");
+}
+
+/* ===== IA PROGRESIVA ===== */
+function generateAIRoutine(profile, history = []) {
+  let volume = 3;
+
+  if (profile.age < 25) volume = 4;
+  if (profile.age >= 35) volume = 2;
+  if (history.length >= 5) volume++;
+
+  let focus = "fuerza";
+  if (profile.goal === "definicion") focus = "resistencia";
+  if (profile.goal === "cardio") focus = "cardio";
+
+  return {
+    focus,
+    volume,
+    recommendation:
+      volume >= 4
+        ? "Excelente progreso, subimos intensidad 💪"
+        : "Vamos progresivo, prioriza técnica 👍"
+  };
+}
+
+/* ===== HISTORIAL ===== */
+function saveWorkoutDone() {
+  const history = JSON.parse(localStorage.getItem("history")) || [];
+  history.push({
+    date: new Date().toLocaleDateString()
+  });
+  localStorage.setItem("history", JSON.stringify(history));
+  alert("Entrenamiento guardado");
 }
 
 /* ===== RUTINA ===== */
@@ -37,38 +69,47 @@ function loadRoutine() {
     return;
   }
 
+  const history = JSON.parse(localStorage.getItem("history")) || [];
+  const ai = generateAIRoutine(profile, history);
+
   let routine = [];
 
-  if (profile.goal === "volumen") {
+  if (ai.focus === "fuerza") {
     routine = [
-      "Press banca 4x8",
-      "Sentadilla 4x8",
-      "Dominadas 3x6"
+      `Press banca ${ai.volume}x8`,
+      `Sentadilla ${ai.volume}x8`,
+      `Remo ${ai.volume}x10`
     ];
   }
 
-  if (profile.goal === "definicion") {
+  if (ai.focus === "resistencia") {
     routine = [
-      "Flexiones 4x15",
-      "Zancadas 3x12",
-      "Plancha 3x30s"
+      `Flexiones ${ai.volume}x15`,
+      `Zancadas ${ai.volume}x12`,
+      `Plancha ${ai.volume}x30s`
     ];
   }
 
-  if (profile.goal === "cardio") {
+  if (ai.focus === "cardio") {
     routine = [
-      "Cinta 20 min",
-      "Saltos 3x40",
-      "Bicicleta 15 min"
+      "Cinta 25 min",
+      "Bicicleta 20 min",
+      "Saltos 4x40"
     ];
   }
 
-  list.innerHTML = "";
+  list.innerHTML = `<li><strong>IA:</strong> ${ai.recommendation}</li>`;
+
   routine.forEach(ex => {
     const li = document.createElement("li");
     li.textContent = ex;
     list.appendChild(li);
   });
+
+  const btn = document.createElement("button");
+  btn.textContent = "Marcar entrenamiento realizado";
+  btn.onclick = saveWorkoutDone;
+  list.appendChild(btn);
 }
 
 /* ===== CARGA INICIAL ===== */
