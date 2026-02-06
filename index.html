@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FIT·AI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles.css">
-  <script defer src="app.js"></script>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f172a" />
 </head>
 
 <body>
 
-<header class="top">
-  <h1>FIT·AI</h1>
-  <p>Entrenador inteligente</p>
+  <!-- HEADER -->
+  <header class="header">
+    <h1>FIT·AI</h1>
+    <p>Entrenador inteligente</p>
+  </header>
 
-  <nav>
+  <!-- NAVEGACIÓN -->
+  <nav class="nav">
     <button onclick="go('home')">Inicio</button>
     <button onclick="go('profile')">Perfil</button>
     <button onclick="go('routine')">Rutina</button>
@@ -22,9 +30,19 @@
     <button onclick="go('stats')">Stats</button>
     <button onclick="go('exercises')">Ejercicios</button>
   </nav>
-</header>
 
-<main id="content"></main>
+  <!-- CONTENIDO DINÁMICO -->
+  <main id="content" class="content">
+    <!-- Aquí cargan las páginas -->
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2026 FIT·AI</p>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script src="app.js"></script>
 
 </body>
 </html>
