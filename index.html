@@ -3,14 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>FIT·AI</title>
+
+  <!-- Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#22c55e">
+
+  <!-- Estilos -->
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<h1>FIT·AI.  funcionando</h1>
-<p>Mi app fitness ya está en GitHub</p>
+  <header>
+    <h1>FIT·AI</h1>
+    <p>Entrenador inteligente</p>
+  </header>
 
-<script src="app.js"></script>
+  <main>
+    <button id="testBtn">Probar notificación</button>
+    <p id="status"></p>
+  </main>
+
+  <script src="app.js"></script>
 </body>
 </html>
