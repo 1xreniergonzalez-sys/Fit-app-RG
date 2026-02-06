@@ -1,89 +1,168 @@
+/* ===============================
+   RESET
+================================ */
 * {
   box-sizing: border-box;
-  font-family: system-ui, Arial, sans-serif;
-}
-
-body {
   margin: 0;
-  background: #f2f4f6;
-  color: #222;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.top {
-  background: #111;
-  color: #fff;
-  padding: 15px;
-  text-align: center;
-}
-
-nav {
+/* ===============================
+   BODY
+================================ */
+body {
+  background: #0f172a;
+  color: #f8fafc;
+  min-height: 100vh;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
+  flex-direction: column;
 }
 
-nav button {
-  padding: 10px 14px;
-  border: none;
-  border-radius: 6px;
-  background: #2ecc71;
+/* ===============================
+   HEADER
+================================ */
+.header {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #0ea5e9, #22c55e);
+}
+
+.header h1 {
+  font-size: 2.2rem;
   font-weight: bold;
 }
 
-main {
-  padding: 20px;
+.header p {
+  opacity: 0.9;
 }
 
-input, select, button {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
+/* ===============================
+   NAV
+================================ */
+.nav {
+  display: flex;
+  overflow-x: auto;
+  background: #020617;
+  padding: 10px;
+  gap: 10px;
 }
 
-.exercise {
-  background: #fff;
-  padding: 15px;
-  margin-bottom: 15px;
+.nav button {
+  background: #1e293b;
+  color: #f8fafc;
+  border: none;
+  padding: 10px 14px;
   border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.nav button:hover {
+  background: #0ea5e9;
+}
+
+.nav button:active {
+  transform: scale(0.95);
+}
+
+/* ===============================
+   CONTENT
+================================ */
+.content {
+  flex: 1;
+  padding: 20px;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===============================
+   SECTIONS
+================================ */
+h2 {
+  margin-bottom: 15px;
+}
+
+p {
+  margin-bottom: 10px;
+  opacity: 0.95;
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+button {
+  margin-top: 10px;
+  background: #22c55e;
+  color: #020617;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #16a34a;
+}
+
+/* ===============================
+   INPUTS
+================================ */
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+/* ===============================
+   EXERCISES
+================================ */
+.exercise {
+  background: #020617;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exercise:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
 .exercise img {
   width: 100%;
-  max-width: 320px;
+  max-width: 280px;
   display: block;
   margin: 10px auto;
-
-  /* ===== ANIMACIONES ===== */
-
-.fade {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.6s ease forwards;
+  border-radius: 10px;
 }
 
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ===============================
+   TIMER
+================================ */
+#time {
+  font-size: 3rem;
+  text-align: center;
+  margin: 20px 0;
 }
 
-nav button {
-  transition: transform 0.2s ease, background 0.3s;
-}
-
-nav button:active {
-  transform: scale(0.95);
-}
-
-.exercise {
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.exercise:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
+/* ===============================
+   FOOTER
+================================ */
+.footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 0.8rem;
+  background: #020617;
+  opacity: 0.7;
 }
