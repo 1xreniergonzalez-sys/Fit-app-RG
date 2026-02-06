@@ -7,30 +7,27 @@ function go(page) {
     .then(html => {
       content.innerHTML = html;
       if (page === "routine") loadRoutine();
-    })
-    .catch(() => {
-      content.innerHTML = "<p>Error cargando página</p>";
+      if (page === "stats") loadStats();
+      if (page === "timer") resetTimer();
     });
 }
 
 /* ===== PERFIL ===== */
 function saveProfile() {
   const profile = {
-    age: Number(document.getElementById("age").value),
-    weight: Number(document.getElementById("weight").value),
-    height: Number(document.getElementById("height").value),
-    goal: document.getElementById("goal").value
+    age: Number(age.value),
+    weight: Number(weight.value),
+    height: Number(height.value),
+    goal: goal.value
   };
-
   localStorage.setItem("profile", JSON.stringify(profile));
   alert("Perfil guardado");
   go("routine");
 }
 
-/* ===== IA PROGRESIVA ===== */
-function generateAIRoutine(profile, history = []) {
+/* ===== IA ===== */
+function generateAIRoutine(profile, history) {
   let volume = 3;
-
   if (profile.age < 25) volume = 4;
   if (profile.age >= 35) volume = 2;
   if (history.length >= 5) volume++;
@@ -39,24 +36,7 @@ function generateAIRoutine(profile, history = []) {
   if (profile.goal === "definicion") focus = "resistencia";
   if (profile.goal === "cardio") focus = "cardio";
 
-  return {
-    focus,
-    volume,
-    recommendation:
-      volume >= 4
-        ? "Excelente progreso, subimos intensidad 💪"
-        : "Vamos progresivo, prioriza técnica 👍"
-  };
-}
-
-/* ===== HISTORIAL ===== */
-function saveWorkoutDone() {
-  const history = JSON.parse(localStorage.getItem("history")) || [];
-  history.push({
-    date: new Date().toLocaleDateString()
-  });
-  localStorage.setItem("history", JSON.stringify(history));
-  alert("Entrenamiento guardado");
+  return { focus, volume };
 }
 
 /* ===== RUTINA ===== */
@@ -72,35 +52,26 @@ function loadRoutine() {
   const history = JSON.parse(localStorage.getItem("history")) || [];
   const ai = generateAIRoutine(profile, history);
 
-  let routine = [];
-
-  if (ai.focus === "fuerza") {
-    routine = [
+  const routines = {
+    fuerza: [
       `Press banca ${ai.volume}x8`,
       `Sentadilla ${ai.volume}x8`,
       `Remo ${ai.volume}x10`
-    ];
-  }
-
-  if (ai.focus === "resistencia") {
-    routine = [
+    ],
+    resistencia: [
       `Flexiones ${ai.volume}x15`,
       `Zancadas ${ai.volume}x12`,
       `Plancha ${ai.volume}x30s`
-    ];
-  }
-
-  if (ai.focus === "cardio") {
-    routine = [
+    ],
+    cardio: [
       "Cinta 25 min",
       "Bicicleta 20 min",
       "Saltos 4x40"
-    ];
-  }
+    ]
+  };
 
-  list.innerHTML = `<li><strong>IA:</strong> ${ai.recommendation}</li>`;
-
-  routine.forEach(ex => {
+  list.innerHTML = "";
+  routines[ai.focus].forEach(ex => {
     const li = document.createElement("li");
     li.textContent = ex;
     list.appendChild(li);
@@ -112,5 +83,48 @@ function loadRoutine() {
   list.appendChild(btn);
 }
 
-/* ===== CARGA INICIAL ===== */
+/* ===== HISTORIAL ===== */
+function saveWorkoutDone() {
+  const history = JSON.parse(localStorage.getItem("history")) || [];
+  history.push(new Date().toLocaleDateString());
+  localStorage.setItem("history", JSON.stringify(history));
+  alert("Entrenamiento guardado 💪");
+}
+
+/* ===== TIMER ===== */
+let timer;
+let seconds = 60;
+
+function updateTimer() {
+  document.getElementById("time").textContent = seconds;
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    if (seconds > 0) {
+      seconds--;
+      updateTimer();
+    }
+  }, 1000);
+}
+
+function pauseTimer() {
+  clearInterval(timer);
+}
+
+function resetTimer() {
+  clearInterval(timer);
+  seconds = 60;
+  updateTimer();
+}
+
+/* ===== STATS ===== */
+function loadStats() {
+  const history = JSON.parse(localStorage.getItem("history")) || [];
+  document.getElementById("stats").textContent =
+    `Entrenamientos realizados: ${history.length}`;
+}
+
+/* ===== INICIO ===== */
 go("home");
