@@ -119,6 +119,23 @@ function resetTimer() {
   updateTimer();
 }
 
+/* ===== NOTIFICACIONES ===== */
+function askNotificationPermission() {
+  if ("Notification" in window) {
+    Notification.requestPermission();
+  }
+}
+
+function notifyWorkout() {
+  if (Notification.permission === "granted") {
+    new Notification("FIT·AI 💪", {
+      body: "Es momento de entrenar",
+      icon: "icons/icon-192.png"
+    });
+  }
+}
+
+
 /* ===== STATS ===== */
 function loadStats() {
   const history = JSON.parse(localStorage.getItem("history")) || [];
