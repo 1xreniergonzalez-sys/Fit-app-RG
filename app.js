@@ -1,51 +1,81 @@
+/* ===============================
+   VARIABLES GLOBALES
+================================ */
 const content = document.getElementById("content");
 
-/* ===== NAVEGACIÓN ===== */
+/* ===============================
+   NAVEGACIÓN ENTRE PÁGINAS
+================================ */
 function go(page) {
   fetch(`pages/${page}.html`)
-    .then(r => r.text())
+    .then(res => {
+      if (!res.ok) throw new Error("Página no encontrada");
+      return res.text();
+    })
     .then(html => {
       content.innerHTML = html;
+
+      if (page === "profile") loadProfile();
       if (page === "routine") loadRoutine();
       if (page === "stats") loadStats();
       if (page === "timer") resetTimer();
+    })
+    .catch(err => {
+      content.innerHTML = `<p>Error cargando la página</p>`;
+      console.error(err);
     });
 }
 
-/* ===== PERFIL ===== */
+/* ===============================
+   PERFIL DE USUARIO
+================================ */
 function saveProfile() {
   const profile = {
-    age: Number(age.value),
-    weight: Number(weight.value),
-    height: Number(height.value),
-    goal: goal.value
+    age: document.getElementById("age").value,
+    weight: document.getElementById("weight").value,
+    height: document.getElementById("height").value,
+    goal: document.getElementById("goal").value
   };
   localStorage.setItem("profile", JSON.stringify(profile));
   alert("Perfil guardado");
-  go("routine");
 }
 
-/* ===== IA ===== */
+function loadProfile() {
+  const profile = JSON.parse(localStorage.getItem("profile"));
+  if (!profile) return;
+
+  document.getElementById("age").value = profile.age;
+  document.getElementById("weight").value = profile.weight;
+  document.getElementById("height").value = profile.height;
+  document.getElementById("goal").value = profile.goal;
+}
+
+/* ===============================
+   IA DE RUTINAS (AVANZADA LIGERA)
+================================ */
 function generateAIRoutine(profile, history) {
   let volume = 3;
-  if (profile.age < 25) volume = 4;
-  if (profile.age >= 35) volume = 2;
-  if (history.length >= 5) volume++;
+  let fatigue = history.length % 4 === 0;
+
+  if (profile.age < 25) volume++;
+  if (profile.age > 40) volume--;
+  if (fatigue) volume--;
 
   let focus = "fuerza";
+
   if (profile.goal === "definicion") focus = "resistencia";
   if (profile.goal === "cardio") focus = "cardio";
 
   return { focus, volume };
 }
 
-/* ===== RUTINA ===== */
+/* ===============================
+   RUTINAS
+================================ */
 function loadRoutine() {
   const profile = JSON.parse(localStorage.getItem("profile"));
-  const list = document.getElementById("routineList");
-
   if (!profile) {
-    list.innerHTML = "<li>Configura tu perfil primero</li>";
+    content.innerHTML += `<p>Primero completa tu perfil</p>`;
     return;
   }
 
@@ -56,70 +86,93 @@ function loadRoutine() {
     fuerza: [
       `Press banca ${ai.volume}x8`,
       `Sentadilla ${ai.volume}x8`,
-      `Remo ${ai.volume}x10`
+      `Peso muerto ${ai.volume}x6`
     ],
     resistencia: [
       `Flexiones ${ai.volume}x15`,
       `Zancadas ${ai.volume}x12`,
-      `Plancha ${ai.volume}x30s`
+      `Plancha ${ai.volume}x40s`
     ],
     cardio: [
-      "Cinta 25 min",
-      "Bicicleta 20 min",
-      "Saltos 4x40"
+      "Cinta 30 min",
+      "Bicicleta 25 min",
+      "HIIT 15 min"
     ]
   };
 
-  list.innerHTML = "";
-  routines[ai.focus].forEach(ex => {
+  const list = document.createElement("ul");
+  routines[ai.focus].forEach(ej => {
     const li = document.createElement("li");
-    li.textContent = ex;
+    li.textContent = ej;
     list.appendChild(li);
   });
 
+  content.appendChild(list);
+
   const btn = document.createElement("button");
-  btn.textContent = "Marcar entrenamiento realizado";
-  btn.onclick = saveWorkoutDone;
-  list.appendChild(btn);
+  btn.textContent = "Marcar entrenamiento como realizado";
+  btn.onclick = saveWorkout;
+  content.appendChild(btn);
 }
 
-/* ===== HISTORIAL ===== */
-function saveWorkoutDone() {
+function saveWorkout() {
   const history = JSON.parse(localStorage.getItem("history")) || [];
-  history.push(new Date().toLocaleDateString());
+  history.push(new Date().toISOString());
   localStorage.setItem("history", JSON.stringify(history));
   alert("Entrenamiento guardado 💪");
 }
 
-/* ===== TIMER ===== */
-let timer;
+/* ===============================
+   ESTADÍSTICAS
+================================ */
+function loadStats() {
+  const history = JSON.parse(localStorage.getItem("history")) || [];
+  const statsEl = document.getElementById("stats");
+  if (!statsEl) return;
+
+  statsEl.textContent = `Entrenamientos realizados: ${history.length}`;
+}
+
+/* ===============================
+   TEMPORIZADOR
+================================ */
+let timerInterval = null;
 let seconds = 60;
 
-function updateTimer() {
-  document.getElementById("time").textContent = seconds;
+function updateTime() {
+  const timeEl = document.getElementById("time");
+  if (timeEl) timeEl.textContent = seconds;
 }
 
 function startTimer() {
-  clearInterval(timer);
-  timer = setInterval(() => {
+  if (timerInterval) return;
+  timerInterval = setInterval(() => {
     if (seconds > 0) {
       seconds--;
-      updateTimer();
+      updateTime();
+    } else {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      notifyWorkout();
     }
   }, 1000);
 }
 
 function pauseTimer() {
-  clearInterval(timer);
+  clearInterval(timerInterval);
+  timerInterval = null;
 }
 
 function resetTimer() {
-  clearInterval(timer);
+  clearInterval(timerInterval);
+  timerInterval = null;
   seconds = 60;
-  updateTimer();
+  updateTime();
 }
 
-/* ===== NOTIFICACIONES ===== */
+/* ===============================
+   NOTIFICACIONES
+================================ */
 function askNotificationPermission() {
   if ("Notification" in window) {
     Notification.requestPermission();
@@ -129,19 +182,16 @@ function askNotificationPermission() {
 function notifyWorkout() {
   if (Notification.permission === "granted") {
     new Notification("FIT·AI 💪", {
-      body: "Es momento de entrenar",
+      body: "Tiempo terminado, sigue con el próximo ejercicio",
       icon: "icons/icon-192.png"
     });
   }
 }
 
-
-/* ===== STATS ===== */
-function loadStats() {
-  const history = JSON.parse(localStorage.getItem("history")) || [];
-  document.getElementById("stats").textContent =
-    `Entrenamientos realizados: ${history.length}`;
-}
-
-/* ===== INICIO ===== */
-go("home");
+/* ===============================
+   INICIO
+================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  askNotificationPermission();
+  go("home");
+});
