@@ -232,5 +232,32 @@ const advancedRoutines = {
       "Core avanzado"
     ]
   }
+
+   function showRoutine() {
+  const profile = JSON.parse(localStorage.getItem("profile"));
+  if (!profile) return alert("Completa tu perfil");
+
+  const level = document.getElementById("level").value;
+  const goal = profile.goal;
+
+  const routine = advancedRoutines[goal]?.[level];
+  const container = document.getElementById("routineResult");
+  container.innerHTML = "";
+
+  if (!routine) {
+    container.textContent = "No hay rutina disponible";
+    return;
+  }
+
+  const ul = document.createElement("ul");
+  routine.forEach(ex => {
+    const li = document.createElement("li");
+    li.textContent = ex;
+    ul.appendChild(li);
+  });
+
+  container.appendChild(ul);
+}
+
 };
 
