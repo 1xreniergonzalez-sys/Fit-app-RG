@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FIT·AI</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -14,34 +14,33 @@
 </header>
 
 <nav>
-  <button onclick="showScreen('home')">Inicio</button>
-  <button onclick="showScreen('routines')">Rutinas</button>
-  <button onclick="showScreen('stats')">Estadísticas</button>
+  <button id="btn-home">Inicio</button>
+  <button id="btn-routines">Rutinas</button>
+  <button id="btn-stats">Estadísticas</button>
 </nav>
 
 <main>
 
-  <!-- HOME -->
   <section id="home" class="screen active">
     <h2>Bienvenido</h2>
-    <p>Tu plan de entrenamiento inteligente.</p>
+    <p>Entrena de forma inteligente y constante.</p>
   </section>
 
-  <!-- ROUTINES -->
   <section id="routines" class="screen">
     <h2>Rutinas</h2>
     <div id="routine-list"></div>
   </section>
 
-  <!-- STATS -->
   <section id="stats" class="screen">
     <h2>Estadísticas</h2>
-    <p>Próximamente gráficos automáticos 📊</p>
+    <p>Aquí verás tu progreso.</p>
   </section>
 
 </main>
 
+<!-- ORDEN IMPORTANTE -->
 <script src="images.js"></script>
 <script src="app.js"></script>
+
 </body>
 </html>
