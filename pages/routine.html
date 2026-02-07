@@ -1,2 +1,21 @@
 <h2>Rutina del día</h2>
-<ul id="routineList"></ul>
+
+<label>Día de la semana</label>
+<select id="day">
+  <option value="lunes">Lunes</option>
+  <option value="martes">Martes</option>
+  <option value="miercoles">Miércoles</option>
+  <option value="jueves">Jueves</option>
+  <option value="viernes">Viernes</option>
+</select>
+
+<label>Nivel</label>
+<select id="level">
+  <option value="1">Nivel 1</option>
+  <option value="2">Nivel 2</option>
+  <option value="3">Nivel 3</option>
+</select>
+
+<button onclick="showRoutine()">Ver rutina</button>
+
+<div id="routineResult"></div>
