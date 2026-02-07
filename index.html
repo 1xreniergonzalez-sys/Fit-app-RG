@@ -13,32 +13,54 @@
   <p>Entrenador inteligente</p>
 </header>
 
-<nav>
+<nav id="main-nav" style="display:none;">
   <button id="btn-home">Inicio</button>
   <button id="btn-routines">Rutinas</button>
   <button id="btn-stats">Estadísticas</button>
+  <button id="btn-logout">Salir</button>
 </nav>
 
 <main>
 
-  <section id="home" class="screen active">
+  <!-- LOGIN -->
+  <section id="login" class="screen active">
+    <h2>Iniciar sesión</h2>
+
+    <input id="login-user" placeholder="Usuario">
+    <input id="login-pass" type="password" placeholder="Contraseña">
+
+    <button onclick="login()">Entrar</button>
+
+    <p>¿No tienes cuenta?</p>
+
+    <input id="register-user" placeholder="Nuevo usuario">
+    <input id="register-pass" type="password" placeholder="Nueva contraseña">
+
+    <button onclick="register()">Crear cuenta</button>
+
+    <p id="login-msg"></p>
+  </section>
+
+  <!-- HOME -->
+  <section id="home" class="screen">
     <h2>Bienvenido</h2>
     <p>Entrena de forma inteligente y constante.</p>
   </section>
 
+  <!-- ROUTINES -->
   <section id="routines" class="screen">
     <h2>Rutinas</h2>
     <div id="routine-list"></div>
   </section>
 
+  <!-- STATS -->
   <section id="stats" class="screen">
     <h2>Estadísticas</h2>
-    <p>Aquí verás tu progreso.</p>
+    <p>Próximamente tu progreso 📊</p>
   </section>
 
 </main>
 
-<!-- ORDEN IMPORTANTE -->
 <script src="images.js"></script>
 <script src="app.js"></script>
 
