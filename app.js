@@ -112,4 +112,61 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     showScreen("login");
   }
+
+   /* ===============================
+   PERFIL DE USUARIO
+================================ */
+function saveProfile() {
+  const profile = {
+    age: age.value,
+    weight: weight.value,
+    height: height.value,
+    goal: goal.value
+  };
+
+  localStorage.setItem("profile", JSON.stringify(profile));
+  document.getElementById("profile-msg").textContent = "Perfil guardado ✔";
+}
+
+/* ===============================
+   IA BÁSICA (NO INTRUSIVA)
+================================ */
+function recommendRoutine() {
+  const profile = JSON.parse(localStorage.getItem("profile"));
+  if (!profile) return;
+
+  if (profile.goal === "volumen") {
+    alert("IA recomienda rutina de FUERZA 💪");
+  }
+  if (profile.goal === "definicion") {
+    alert("IA recomienda rutina MIXTA 🔥");
+  }
+  if (profile.goal === "cardio") {
+    alert("IA recomienda CARDIO 🏃");
+  }
+}
+
+/* ===============================
+   TEMPORIZADOR
+================================ */
+let timer;
+function startTimer(seconds = 30) {
+  let time = seconds;
+  clearInterval(timer);
+
+  timer = setInterval(() => {
+    console.log("Tiempo:", time);
+    time--;
+    if (time < 0) clearInterval(timer);
+  }, 1000);
+}
+
+/* ===============================
+   ESTADÍSTICAS BÁSICAS
+================================ */
+function saveCompletedExercise() {
+  let done = Number(localStorage.getItem("done")) || 0;
+  localStorage.setItem("done", done + 1);
+}
+
 });
