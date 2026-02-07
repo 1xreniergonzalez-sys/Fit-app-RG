@@ -22,10 +22,6 @@ header {
   margin: auto;
 }
 
-h2 {
-  margin-top: 0;
-}
-
 input, select, button {
   width: 100%;
   padding: 12px;
@@ -48,25 +44,26 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.9;
-}
-
 .hidden {
   display: none;
 }
 
-#routine div {
+/* ----- EJERCICIOS ----- */
+.exercise {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   background: #020617;
   border: 1px solid #334155;
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
-.logout {
-  background: #ef4444;
-  color: white;
+.exercise img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
 }
 
 footer {
