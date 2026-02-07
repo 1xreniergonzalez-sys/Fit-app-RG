@@ -1,10 +1,6 @@
-/* ===============================
-   FIT·AI - ESTILOS GENERALES
-================================ */
-
 * {
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  font-family: system-ui, sans-serif;
 }
 
 body {
@@ -13,30 +9,24 @@ body {
   color: #e5e7eb;
 }
 
-/* --------- HEADER ---------- */
 header {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background: linear-gradient(135deg,#22c55e,#16a34a);
   color: #020617;
-  padding: 20px;
   text-align: center;
+  padding: 20px;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 28px;
-}
-
-/* --------- CONTENEDOR ---------- */
 .container {
   padding: 20px;
   max-width: 500px;
   margin: auto;
 }
 
-/* --------- INPUTS ---------- */
-input,
-select,
-button {
+h2 {
+  margin-top: 0;
+}
+
+input, select, button {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
@@ -45,8 +35,7 @@ button {
   font-size: 16px;
 }
 
-input,
-select {
+input, select {
   background: #020617;
   color: #e5e7eb;
   border: 1px solid #334155;
@@ -57,53 +46,31 @@ button {
   color: #020617;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s, opacity 0.2s;
 }
 
 button:hover {
-  transform: scale(1.03);
   opacity: 0.9;
 }
 
-/* --------- RUTINA ---------- */
-#routineResult ul {
-  list-style: none;
-  padding: 0;
+.hidden {
+  display: none;
 }
 
-#routineResult li {
+#routine div {
   background: #020617;
   border: 1px solid #334155;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  transition: background 0.3s, transform 0.2s;
-}
-
-#routineResult li:hover {
-  background: #16a34a;
-  color: #020617;
-  transform: translateX(5px);
-}
-
-/* --------- ANIMACIONES ---------- */
-.success {
-  background: #22c55e;
-  color: #020617;
   padding: 10px;
   border-radius: 10px;
-  animation: pop 0.3s ease;
+  margin-bottom: 8px;
 }
 
-@keyframes pop {
-  0% { transform: scale(0.9); }
-  100% { transform: scale(1); }
+.logout {
+  background: #ef4444;
+  color: white;
 }
 
-/* --------- FOOTER ---------- */
 footer {
   text-align: center;
   padding: 20px;
   color: #64748b;
-  font-size: 14px;
 }
