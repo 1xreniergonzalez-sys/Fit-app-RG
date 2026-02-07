@@ -2,15 +2,30 @@
    FIT·AI - APP PRINCIPAL
 ================================ */
 
-// ---------- LOGIN ----------
-function login() {
-  if (!user.value || !pass.value) {
-    alert("Completa los datos");
+// --------- REFERENCIAS ---------
+const loginSection = document.getElementById("loginSection");
+const profileSection = document.getElementById("profileSection");
+const routineSection = document.getElementById("routineSection");
+
+const loginBtn = document.getElementById("loginBtn");
+const saveProfileBtn = document.getElementById("saveProfileBtn");
+const routineBtn = document.getElementById("routineBtn");
+
+const routineDiv = document.getElementById("routine");
+
+// --------- LOGIN ---------
+loginBtn.addEventListener("click", () => {
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
+
+  if (!user || !pass) {
+    alert("Completa usuario y contraseña");
     return;
   }
-  localStorage.setItem("user", user.value);
+
+  localStorage.setItem("user", user);
   showApp();
-}
+});
 
 function showApp() {
   loginSection.classList.add("hidden");
@@ -18,62 +33,76 @@ function showApp() {
   routineSection.classList.remove("hidden");
 }
 
-if (localStorage.getItem("user")) showApp();
+if (localStorage.getItem("user")) {
+  showApp();
+}
 
-// ---------- PERFIL ----------
-function saveProfile() {
+// --------- PERFIL ---------
+saveProfileBtn.addEventListener("click", () => {
   const profile = {
-    age: age.value,
-    weight: weight.value,
-    height: height.value,
-    goal: goal.value
+    age: document.getElementById("age").value,
+    weight: document.getElementById("weight").value,
+    height: document.getElementById("height").value,
+    goal: document.getElementById("goal").value
   };
-  localStorage.setItem("profile", JSON.stringify(profile));
-  alert("Perfil guardado");
-}
 
-// ---------- IA DE RUTINAS ----------
-function exerciseCard(name, imgKey, series) {
-  return `
-    <div class="exercise">
-      <img src="${IMAGES[imgKey]}" alt="${name}">
-      <div>
-        <strong>${name}</strong><br>
-        ${series} series
-      </div>
-    </div>
-  `;
-}
+  if (!profile.age || !profile.weight || !profile.height) {
+    alert("Completa todos los datos del perfil");
+    return;
+  }
+
+  localStorage.setItem("profile", JSON.stringify(profile));
+  alert("Perfil guardado correctamente");
+});
+
+// --------- GENERAR RUTINA (IA SIMPLE) ---------
+routineBtn.addEventListener("click", generateRoutine);
 
 function generateRoutine() {
   const profile = JSON.parse(localStorage.getItem("profile"));
-  if (!profile) return alert("Guarda tu perfil");
 
-  const lvl = parseInt(level.value);
-  routine.innerHTML = "";
+  if (!profile) {
+    alert("Primero guarda tu perfil");
+    return;
+  }
+
+  const level = parseInt(document.getElementById("level").value);
+  routineDiv.innerHTML = "";
 
   const routines = {
     volumen: [
       ["Press banca", "bench"],
-      ["Sentadilla", "squat"],
-      ["Remo", "row"]
+      ["Sentadilla", "bench"],
+      ["Remo", "bench"]
     ],
     definicion: [
-      ["Flexiones", "pushup"],
-      ["Zancadas", "lunge"],
-      ["Plancha", "plank"]
+      ["Flexiones", "bench"],
+      ["Zancadas", "bench"],
+      ["Plancha", "bench"]
     ],
     cardio: [
-      ["Flexiones", "pushup"],
-      ["Plancha", "plank"]
+      ["Cardio básico", "bench"],
+      ["Saltos", "bench"]
     ]
   };
 
-  routines[profile.goal].forEach(ex => {
-    routine.innerHTML += exerciseCard(
-      ex[0],
-      ex[1],
-      lvl * 2
-    );
+  const selectedRoutine = routines[profile.goal];
+
+  if (!selectedRoutine) {
+    routineDiv.innerHTML = "<p>No hay rutina disponible</p>";
+    return;
+  }
+
+  selectedRoutine.forEach(exercise => {
+    const card = document.createElement("div");
+    card.className = "exercise";
+    card.innerHTML = `
+      <img src="${IMAGES[exercise[1]]}" alt="${exercise[0]}">
+      <div>
+        <strong>${exercise[0]}</strong><br>
+        ${level * 2} series
+      </div>
+    `;
+    routineDiv.appendChild(card);
   });
 }
