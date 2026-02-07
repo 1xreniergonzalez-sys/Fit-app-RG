@@ -1,38 +1,39 @@
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
 
 body {
-  margin: 0;
-  background: #0f172a;
-  color: white;
+  background-color: #0f172a;
+  color: #ffffff;
 }
 
 header {
-  text-align: center;
+  background-color: #020617;
   padding: 20px;
-  background: #020617;
+  text-align: center;
 }
 
 nav {
   display: flex;
   justify-content: space-around;
-  background: #020617;
+  background-color: #020617;
   padding: 10px;
 }
 
 nav button {
-  background: #2563eb;
-  border: none;
-  padding: 10px 16px;
+  background-color: #2563eb;
   color: white;
+  border: none;
+  padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
 }
 
 nav button:hover {
-  background: #1d4ed8;
+  background-color: #1d4ed8;
 }
 
 .screen {
@@ -45,13 +46,13 @@ nav button:hover {
 }
 
 .card {
-  background: #020617;
-  border-radius: 12px;
-  padding: 15px;
+  background-color: #020617;
   margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 12px;
   display: flex;
-  gap: 15px;
   align-items: center;
+  gap: 15px;
 }
 
 .card img {
