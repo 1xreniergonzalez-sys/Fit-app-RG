@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FIT·AI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,50 +13,35 @@
   <p>Entrenador inteligente</p>
 </header>
 
-<div class="container">
+<nav>
+  <button onclick="showScreen('home')">Inicio</button>
+  <button onclick="showScreen('routines')">Rutinas</button>
+  <button onclick="showScreen('stats')">Estadísticas</button>
+</nav>
 
-  <!-- LOGIN -->
-  <section id="loginSection">
-    <h2>Iniciar sesión</h2>
-    <input id="user" placeholder="Usuario">
-    <input id="pass" type="password" placeholder="Contraseña">
-    <button id="loginBtn">Entrar</button>
+<main>
+
+  <!-- HOME -->
+  <section id="home" class="screen active">
+    <h2>Bienvenido</h2>
+    <p>Tu plan de entrenamiento inteligente.</p>
   </section>
 
-  <!-- PERFIL -->
-  <section id="profileSection" class="hidden">
-    <h2>Perfil</h2>
-    <input id="age" type="number" placeholder="Edad">
-    <input id="weight" type="number" placeholder="Peso (kg)">
-    <input id="height" type="number" placeholder="Estatura (cm)">
-    <select id="goal">
-      <option value="volumen">Volumen</option>
-      <option value="definicion">Definición</option>
-      <option value="cardio">Cardio</option>
-    </select>
-    <button id="saveProfileBtn">Guardar perfil</button>
+  <!-- ROUTINES -->
+  <section id="routines" class="screen">
+    <h2>Rutinas</h2>
+    <div id="routine-list"></div>
   </section>
 
-  <!-- RUTINAS -->
-  <section id="routineSection" class="hidden">
-    <h2>Rutina del día</h2>
-    <select id="level">
-      <option value="1">Nivel 1</option>
-      <option value="2">Nivel 2</option>
-      <option value="3">Nivel 3</option>
-    </select>
-    <button id="routineBtn">Generar rutina</button>
-
-    <div id="routine"></div>
+  <!-- STATS -->
+  <section id="stats" class="screen">
+    <h2>Estadísticas</h2>
+    <p>Próximamente gráficos automáticos 📊</p>
   </section>
 
-</div>
+</main>
 
-<footer>FIT·AI © 2026</footer>
-
-<!-- ORDEN MUY IMPORTANTE -->
 <script src="images.js"></script>
 <script src="app.js"></script>
-
 </body>
 </html>
