@@ -1,90 +1,69 @@
-/* =================================================
-   FIT·AI — app.js ESTABLE Y SIN ERRORES
-   Requisitos:
-   - index.html con secciones #home #routines #stats
-   - styles.css
-   - images.js cargado ANTES de este archivo
-================================================= */
+/* =========================================
+   FIT·AI — app.js DEFINITIVO
+========================================= */
 
-/* ===============================
-   NAVEGACIÓN ENTRE MENÚS
-================================ */
-function showScreen(screenId) {
-  // Ocultar todas las pantallas
+/* ---------- Navegación ---------- */
+function showScreen(id) {
   document.querySelectorAll(".screen").forEach(screen => {
     screen.classList.remove("active");
   });
 
-  // Mostrar la pantalla solicitada
-  const target = document.getElementById(screenId);
+  const target = document.getElementById(id);
   if (target) {
     target.classList.add("active");
   }
 }
 
-/* ===============================
-   DATOS DE RUTINAS
-================================ */
+/* ---------- Eventos de menú ---------- */
+document.getElementById("btn-home").addEventListener("click", () => {
+  showScreen("home");
+});
+
+document.getElementById("btn-routines").addEventListener("click", () => {
+  showScreen("routines");
+});
+
+document.getElementById("btn-stats").addEventListener("click", () => {
+  showScreen("stats");
+});
+
+/* ---------- Datos de rutinas ---------- */
 const ROUTINES = [
   {
-    name: "Rutina Full Body",
+    name: "Full Body",
     exercises: [
-      {
-        name: "Flexiones",
-        reps: "3 x 15",
-        image: IMAGES.pushup
-      },
-      {
-        name: "Sentadillas",
-        reps: "3 x 20",
-        image: IMAGES.squat
-      }
+      { name: "Flexiones", reps: "3 x 15", image: IMAGES.pushup },
+      { name: "Sentadillas", reps: "3 x 20", image: IMAGES.squat }
     ]
   },
   {
-    name: "Pecho y Tríceps",
+    name: "Pecho",
     exercises: [
-      {
-        name: "Press banca",
-        reps: "4 x 10",
-        image: IMAGES.bench
-      },
-      {
-        name: "Flexiones",
-        reps: "3 x 15",
-        image: IMAGES.pushup
-      }
+      { name: "Press Banca", reps: "4 x 10", image: IMAGES.bench },
+      { name: "Flexiones", reps: "3 x 15", image: IMAGES.pushup }
     ]
   }
 ];
 
-/* ===============================
-   CARGAR RUTINAS EN PANTALLA
-================================ */
+/* ---------- Cargar rutinas ---------- */
 function loadRoutines() {
   const container = document.getElementById("routine-list");
-
-  // Seguridad: si no existe, no hace nada
-  if (!container) return;
-
   container.innerHTML = "";
 
   ROUTINES.forEach(routine => {
-    // Título de la rutina
     const title = document.createElement("h3");
     title.textContent = routine.name;
     container.appendChild(title);
 
-    // Ejercicios
-    routine.exercises.forEach(exercise => {
+    routine.exercises.forEach(ex => {
       const card = document.createElement("div");
       card.className = "card";
 
       card.innerHTML = `
-        <img src="${exercise.image}" alt="${exercise.name}">
+        <img src="${ex.image}" alt="${ex.name}">
         <div>
-          <strong>${exercise.name}</strong><br>
-          ${exercise.reps}
+          <strong>${ex.name}</strong><br>
+          ${ex.reps}
         </div>
       `;
 
@@ -93,13 +72,8 @@ function loadRoutines() {
   });
 }
 
-/* ===============================
-   INICIALIZACIÓN GENERAL
-================================ */
+/* ---------- Inicialización ---------- */
 document.addEventListener("DOMContentLoaded", () => {
-  // Mostrar inicio por defecto
   showScreen("home");
-
-  // Cargar rutinas
   loadRoutines();
 });
