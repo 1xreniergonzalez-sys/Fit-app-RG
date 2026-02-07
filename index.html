@@ -1,48 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>FIT·AI</title>
-
-  <!-- Estilos -->
-  <link rel="stylesheet" href="styles.css" />
-
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
 </head>
-
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <h1>FIT·AI</h1>
-    <p>Entrenador inteligente</p>
-  </header>
+<header>
+  <h1>FIT·AI</h1>
+  <p>Entrenador inteligente</p>
+</header>
 
-  <!-- NAVEGACIÓN -->
-  <nav class="nav">
-    <button onclick="go('home')">Inicio</button>
-    <button onclick="go('profile')">Perfil</button>
-    <button onclick="go('routine')">Rutina</button>
-    <button onclick="go('timer')">Timer</button>
-    <button onclick="go('stats')">Stats</button>
-    <button onclick="go('exercises')">Ejercicios</button>
-  </nav>
+<div class="container">
 
-  <!-- CONTENIDO DINÁMICO -->
-  <main id="content" class="content">
-    <!-- Aquí cargan las páginas -->
-  </main>
+  <!-- LOGIN -->
+  <section id="loginSection">
+    <h2>Iniciar sesión</h2>
+    <input id="user" placeholder="Usuario">
+    <input id="pass" type="password" placeholder="Contraseña">
+    <button onclick="login()">Entrar</button>
+  </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>© 2026 FIT·AI</p>
-  </footer>
+  <!-- PERFIL -->
+  <section id="profileSection" class="hidden">
+    <h2>Tu perfil</h2>
+    <input id="age" type="number" placeholder="Edad">
+    <input id="weight" type="number" placeholder="Peso (kg)">
+    <input id="height" type="number" placeholder="Estatura (cm)">
+    <select id="goal">
+      <option value="volumen">Volumen</option>
+      <option value="definicion">Definición</option>
+      <option value="cardio">Cardio</option>
+    </select>
+    <button onclick="saveProfile()">Guardar perfil</button>
+  </section>
 
-  <!-- SCRIPT -->
-  <script src="app.js"></script>
+  <!-- RUTINAS -->
+  <section id="routineSection" class="hidden">
+    <h2>Rutina recomendada</h2>
+    <select id="level">
+      <option value="1">Nivel 1</option>
+      <option value="2">Nivel 2</option>
+      <option value="3">Nivel 3</option>
+    </select>
+    <button onclick="generateRoutine()">Generar rutina</button>
+    <div id="routine"></div>
+  </section>
 
+  <!-- ESTADÍSTICAS -->
+  <section id="statsSection" class="hidden">
+    <h2>Estadísticas</h2>
+    <canvas id="chart" width="300" height="200"></canvas>
+  </section>
+
+  <button onclick="logout()" class="logout hidden">Cerrar sesión</button>
+
+</div>
+
+<footer>
+  FIT·AI © 2026
+</footer>
+
+<script src="app.js"></script>
 </body>
 </html>
