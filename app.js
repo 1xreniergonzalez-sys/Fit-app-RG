@@ -78,6 +78,18 @@ function loadRoutines() {
   const container = document.getElementById("routine-list");
   container.innerHTML = "";
 
+   container.addEventListener("dragover", e => {
+  e.preventDefault();
+  const dragging = document.querySelector(".dragging");
+  const afterElement = getDragAfterElement(container, e.clientY);
+  if (afterElement == null) {
+    container.appendChild(dragging);
+  } else {
+    container.insertBefore(dragging, afterElement);
+  }
+});
+
+
   ROUTINES.forEach(r => {
     const h3 = document.createElement("h3");
     h3.textContent = r.name;
