@@ -1,143 +1,87 @@
-/* ===============================
-   FIT·AI - APP PRINCIPAL
-================================ */
+// ---------- LOGIN ----------
+function login() {
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
 
-// --------- UTILIDADES ----------
-function $(id) {
-  return document.getElementById(id);
+  if (!user || !pass) {
+    alert("Completa usuario y contraseña");
+    return;
+  }
+
+  localStorage.setItem("user", user);
+  showApp();
 }
 
-// --------- PERFIL USUARIO ----------
+function logout() {
+  localStorage.clear();
+  location.reload();
+}
+
+function showApp() {
+  document.getElementById("loginSection").classList.add("hidden");
+  document.getElementById("profileSection").classList.remove("hidden");
+  document.getElementById("routineSection").classList.remove("hidden");
+  document.getElementById("statsSection").classList.remove("hidden");
+  document.querySelector(".logout").classList.remove("hidden");
+}
+
+if (localStorage.getItem("user")) showApp();
+
+// ---------- PERFIL ----------
 function saveProfile() {
   const profile = {
-    age: $("age").value,
-    weight: $("weight").value,
-    height: $("height").value,
-    goal: $("goal").value
+    age: age.value,
+    weight: weight.value,
+    height: height.value,
+    goal: goal.value
+  };
+  localStorage.setItem("profile", JSON.stringify(profile));
+  alert("Perfil guardado");
+}
+
+// ---------- IA DE RUTINAS ----------
+function generateRoutine() {
+  const profile = JSON.parse(localStorage.getItem("profile"));
+  if (!profile) return alert("Guarda tu perfil");
+
+  const level = levelSelect = document.getElementById("level").value;
+  const routineDiv = document.getElementById("routine");
+  routineDiv.innerHTML = "";
+
+  const base = {
+    volumen: ["Press banca", "Sentadilla", "Remo", "Fondos"],
+    definicion: ["Flexiones", "Zancadas", "Plancha", "Burpees"],
+    cardio: ["Correr", "Bicicleta", "Saltar cuerda"]
   };
 
-  if (!profile.age || !profile.weight || !profile.height) {
-    alert("Completa todos los campos");
-    return;
-  }
+  const intensity = level * 2;
 
-  localStorage.setItem("profile", JSON.stringify(profile));
-  alert("Perfil guardado correctamente");
-}
-
-// --------- RUTINAS IA ----------
-const routines = {
-  volumen: {
-    1: [
-      "Press banca 3x10",
-      "Sentadilla 3x10",
-      "Curl bíceps 3x12"
-    ],
-    2: [
-      "Press inclinado 4x8",
-      "Peso muerto 4x6",
-      "Fondos 3x10"
-    ],
-    3: [
-      "Press banca 5x5",
-      "Sentadilla 5x5",
-      "Dominadas lastradas 4x6"
-    ]
-  },
-  definicion: {
-    1: [
-      "Flexiones 4x15",
-      "Zancadas 3x20",
-      "Plancha 3x40s"
-    ],
-    2: [
-      "Circuito HIIT 20 min",
-      "Abdominales 4x20"
-    ],
-    3: [
-      "HIIT intenso 30 min",
-      "Core avanzado"
-    ]
-  },
-  cardio: {
-    1: ["Caminata 30 min"],
-    2: ["Bicicleta 40 min"],
-    3: ["HIIT Cardio 30 min"]
-  }
-};
-
-// --------- MOSTRAR RUTINA ----------
-function showRoutine() {
-  const profile = JSON.parse(localStorage.getItem("profile"));
-  if (!profile) {
-    alert("Primero completa tu perfil");
-    return;
-  }
-
-  const level = $("level").value;
-  const goal = profile.goal;
-
-  const routine = routines[goal]?.[level];
-  const container = $("routineResult");
-  container.innerHTML = "";
-
-  if (!routine) {
-    container.textContent = "No hay rutina disponible";
-    return;
-  }
-
-  const ul = document.createElement("ul");
-  routine.forEach((exercise, index) => {
-    const li = document.createElement("li");
-    li.textContent = exercise;
-    li.onclick = () => completeExercise(index);
-    ul.appendChild(li);
+  base[profile.goal].forEach(ex => {
+    const d = document.createElement("div");
+    d.textContent = `${ex} - ${intensity} series`;
+    routineDiv.appendChild(d);
   });
 
-  container.appendChild(ul);
+  saveStats();
+  drawChart();
 }
 
-// --------- COMPLETAR EJERCICIO ----------
-function completeExercise(index) {
-  alert(`Ejercicio ${index + 1} completado`);
+// ---------- ESTADÍSTICAS ----------
+function saveStats() {
+  const stats = JSON.parse(localStorage.getItem("stats")) || [];
+  stats.push(new Date().toLocaleDateString());
+  localStorage.setItem("stats", JSON.stringify(stats));
 }
 
-// --------- HISTORIAL ----------
-function saveWorkout(day) {
-  const history = JSON.parse(localStorage.getItem("history")) || {};
-  history[day] = (history[day] || 0) + 1;
-  localStorage.setItem("history", JSON.stringify(history));
-}
+function drawChart() {
+  const canvas = document.getElementById("chart");
+  const ctx = canvas.getContext("2d");
+  const stats = JSON.parse(localStorage.getItem("stats")) || [];
 
-// --------- ESTADÍSTICAS ----------
-function showStats() {
-  const history = JSON.parse(localStorage.getItem("history")) || {};
-  let text = "Entrenamientos:\n";
+  ctx.clearRect(0,0,300,200);
+  ctx.fillStyle = "#22c55e";
 
-  for (let day in history) {
-    text += `${day}: ${history[day]}\n`;
-  }
-
-  alert(text || "Sin historial aún");
-}
-
-// --------- NOTIFICACIÓN ----------
-function testNotification() {
-  if (!("Notification" in window)) {
-    alert("Notificaciones no soportadas");
-    return;
-  }
-
-  Notification.requestPermission().then(permission => {
-    if (permission === "granted") {
-      new Notification("FIT·AI", {
-        body: "Hora de entrenar 💪"
-      });
-    }
+  stats.forEach((_, i) => {
+    ctx.fillRect(i * 25, 200 - (i+1)*20, 20, (i+1)*20);
   });
-}
-
-// --------- SERVICE WORKER ----------
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
 }
