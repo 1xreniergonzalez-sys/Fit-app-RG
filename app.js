@@ -195,3 +195,42 @@ document.addEventListener("DOMContentLoaded", () => {
   askNotificationPermission();
   go("home");
 });
+/* ===============================
+   RUTINAS AVANZADAS
+================================ */
+
+const advancedRoutines = {
+  volumen: {
+    1: [
+      "Press banca 3x10",
+      "Sentadilla 3x10",
+      "Curl bíceps 3x12"
+    ],
+    2: [
+      "Press inclinado 4x8",
+      "Peso muerto 4x6",
+      "Fondos 3x10"
+    ],
+    3: [
+      "Press banca pesado 5x5",
+      "Sentadilla 5x5",
+      "Dominadas lastradas 4x6"
+    ]
+  },
+  definicion: {
+    1: [
+      "Flexiones 4x15",
+      "Zancadas 3x20",
+      "Plancha 3x40s"
+    ],
+    2: [
+      "Circuito HIIT 20 min",
+      "Abdominales 4x20"
+    ],
+    3: [
+      "HIIT intenso 30 min",
+      "Core avanzado"
+    ]
+  }
+};
+
