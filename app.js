@@ -1,205 +1,32 @@
 /* ===============================
-   VARIABLES GLOBALES
+   FIT·AI - APP PRINCIPAL
 ================================ */
-const content = document.getElementById("content");
 
-/* ===============================
-   NAVEGACIÓN ENTRE PÁGINAS
-================================ */
-function go(page) {
-  fetch(`pages/${page}.html`)
-    .then(res => {
-      if (!res.ok) throw new Error("Página no encontrada");
-      return res.text();
-    })
-    .then(html => {
-      content.innerHTML = html;
-
-      if (page === "profile") loadProfile();
-      if (page === "routine") loadRoutine();
-      if (page === "stats") loadStats();
-      if (page === "timer") resetTimer();
-    })
-    .catch(err => {
-      content.innerHTML = `<p>Error cargando la página</p>`;
-      console.error(err);
-    });
+// --------- UTILIDADES ----------
+function $(id) {
+  return document.getElementById(id);
 }
 
-/* ===============================
-   PERFIL DE USUARIO
-================================ */
+// --------- PERFIL USUARIO ----------
 function saveProfile() {
   const profile = {
-    age: document.getElementById("age").value,
-    weight: document.getElementById("weight").value,
-    height: document.getElementById("height").value,
-    goal: document.getElementById("goal").value
+    age: $("age").value,
+    weight: $("weight").value,
+    height: $("height").value,
+    goal: $("goal").value
   };
-  localStorage.setItem("profile", JSON.stringify(profile));
-  alert("Perfil guardado");
-}
 
-function loadProfile() {
-  const profile = JSON.parse(localStorage.getItem("profile"));
-  if (!profile) return;
-
-  document.getElementById("age").value = profile.age;
-  document.getElementById("weight").value = profile.weight;
-  document.getElementById("height").value = profile.height;
-  document.getElementById("goal").value = profile.goal;
-}
-
-/* ===============================
-   IA DE RUTINAS (AVANZADA LIGERA)
-================================ */
-function generateAIRoutine(profile, history) {
-  let volume = 3;
-  let fatigue = history.length % 4 === 0;
-
-  if (profile.age < 25) volume++;
-  if (profile.age > 40) volume--;
-  if (fatigue) volume--;
-
-  let focus = "fuerza";
-
-  if (profile.goal === "definicion") focus = "resistencia";
-  if (profile.goal === "cardio") focus = "cardio";
-
-  return { focus, volume };
-}
-
-/* ===============================
-   RUTINAS
-================================ */
-function loadRoutine() {
-  const profile = JSON.parse(localStorage.getItem("profile"));
-  if (!profile) {
-    content.innerHTML += `<p>Primero completa tu perfil</p>`;
+  if (!profile.age || !profile.weight || !profile.height) {
+    alert("Completa todos los campos");
     return;
   }
 
-  const history = JSON.parse(localStorage.getItem("history")) || [];
-  const ai = generateAIRoutine(profile, history);
-
-  const routines = {
-    fuerza: [
-      `Press banca ${ai.volume}x8`,
-      `Sentadilla ${ai.volume}x8`,
-      `Peso muerto ${ai.volume}x6`
-    ],
-    resistencia: [
-      `Flexiones ${ai.volume}x15`,
-      `Zancadas ${ai.volume}x12`,
-      `Plancha ${ai.volume}x40s`
-    ],
-    cardio: [
-      "Cinta 30 min",
-      "Bicicleta 25 min",
-      "HIIT 15 min"
-    ]
-  };
-
-  const list = document.createElement("ul");
-  routines[ai.focus].forEach(ej => {
-    const li = document.createElement("li");
-    li.textContent = ej;
-    list.appendChild(li);
-  });
-
-  content.appendChild(list);
-
-  const btn = document.createElement("button");
-  btn.textContent = "Marcar entrenamiento como realizado";
-  btn.onclick = saveWorkout;
-  content.appendChild(btn);
+  localStorage.setItem("profile", JSON.stringify(profile));
+  alert("Perfil guardado correctamente");
 }
 
-function saveWorkout() {
-  const history = JSON.parse(localStorage.getItem("history")) || [];
-  history.push(new Date().toISOString());
-  localStorage.setItem("history", JSON.stringify(history));
-  alert("Entrenamiento guardado 💪");
-}
-
-/* ===============================
-   ESTADÍSTICAS
-================================ */
-function loadStats() {
-  const history = JSON.parse(localStorage.getItem("history")) || [];
-  const statsEl = document.getElementById("stats");
-  if (!statsEl) return;
-
-  statsEl.textContent = `Entrenamientos realizados: ${history.length}`;
-}
-
-/* ===============================
-   TEMPORIZADOR
-================================ */
-let timerInterval = null;
-let seconds = 60;
-
-function updateTime() {
-  const timeEl = document.getElementById("time");
-  if (timeEl) timeEl.textContent = seconds;
-}
-
-function startTimer() {
-  if (timerInterval) return;
-  timerInterval = setInterval(() => {
-    if (seconds > 0) {
-      seconds--;
-      updateTime();
-    } else {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      notifyWorkout();
-    }
-  }, 1000);
-}
-
-function pauseTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-}
-
-function resetTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-  seconds = 60;
-  updateTime();
-}
-
-/* ===============================
-   NOTIFICACIONES
-================================ */
-function askNotificationPermission() {
-  if ("Notification" in window) {
-    Notification.requestPermission();
-  }
-}
-
-function notifyWorkout() {
-  if (Notification.permission === "granted") {
-    new Notification("FIT·AI 💪", {
-      body: "Tiempo terminado, sigue con el próximo ejercicio",
-      icon: "icons/icon-192.png"
-    });
-  }
-}
-
-/* ===============================
-   INICIO
-================================ */
-document.addEventListener("DOMContentLoaded", () => {
-  askNotificationPermission();
-  go("home");
-});
-/* ===============================
-   RUTINAS AVANZADAS
-================================ */
-
-const advancedRoutines = {
+// --------- RUTINAS IA ----------
+const routines = {
   volumen: {
     1: [
       "Press banca 3x10",
@@ -212,7 +39,7 @@ const advancedRoutines = {
       "Fondos 3x10"
     ],
     3: [
-      "Press banca pesado 5x5",
+      "Press banca 5x5",
       "Sentadilla 5x5",
       "Dominadas lastradas 4x6"
     ]
@@ -231,17 +58,27 @@ const advancedRoutines = {
       "HIIT intenso 30 min",
       "Core avanzado"
     ]
+  },
+  cardio: {
+    1: ["Caminata 30 min"],
+    2: ["Bicicleta 40 min"],
+    3: ["HIIT Cardio 30 min"]
+  }
+};
+
+// --------- MOSTRAR RUTINA ----------
+function showRoutine() {
+  const profile = JSON.parse(localStorage.getItem("profile"));
+  if (!profile) {
+    alert("Primero completa tu perfil");
+    return;
   }
 
-   function showRoutine() {
-  const profile = JSON.parse(localStorage.getItem("profile"));
-  if (!profile) return alert("Completa tu perfil");
-
-  const level = document.getElementById("level").value;
+  const level = $("level").value;
   const goal = profile.goal;
 
-  const routine = advancedRoutines[goal]?.[level];
-  const container = document.getElementById("routineResult");
+  const routine = routines[goal]?.[level];
+  const container = $("routineResult");
   container.innerHTML = "";
 
   if (!routine) {
@@ -250,14 +87,57 @@ const advancedRoutines = {
   }
 
   const ul = document.createElement("ul");
-  routine.forEach(ex => {
+  routine.forEach((exercise, index) => {
     const li = document.createElement("li");
-    li.textContent = ex;
+    li.textContent = exercise;
+    li.onclick = () => completeExercise(index);
     ul.appendChild(li);
   });
 
   container.appendChild(ul);
 }
 
-};
+// --------- COMPLETAR EJERCICIO ----------
+function completeExercise(index) {
+  alert(`Ejercicio ${index + 1} completado`);
+}
 
+// --------- HISTORIAL ----------
+function saveWorkout(day) {
+  const history = JSON.parse(localStorage.getItem("history")) || {};
+  history[day] = (history[day] || 0) + 1;
+  localStorage.setItem("history", JSON.stringify(history));
+}
+
+// --------- ESTADÍSTICAS ----------
+function showStats() {
+  const history = JSON.parse(localStorage.getItem("history")) || {};
+  let text = "Entrenamientos:\n";
+
+  for (let day in history) {
+    text += `${day}: ${history[day]}\n`;
+  }
+
+  alert(text || "Sin historial aún");
+}
+
+// --------- NOTIFICACIÓN ----------
+function testNotification() {
+  if (!("Notification" in window)) {
+    alert("Notificaciones no soportadas");
+    return;
+  }
+
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      new Notification("FIT·AI", {
+        body: "Hora de entrenar 💪"
+      });
+    }
+  });
+}
+
+// --------- SERVICE WORKER ----------
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
