@@ -1,108 +1,105 @@
+/* =================================================
+   FIT·AI — app.js ESTABLE Y SIN ERRORES
+   Requisitos:
+   - index.html con secciones #home #routines #stats
+   - styles.css
+   - images.js cargado ANTES de este archivo
+================================================= */
+
 /* ===============================
-   FIT·AI - APP PRINCIPAL
+   NAVEGACIÓN ENTRE MENÚS
 ================================ */
+function showScreen(screenId) {
+  // Ocultar todas las pantallas
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
 
-// --------- REFERENCIAS ---------
-const loginSection = document.getElementById("loginSection");
-const profileSection = document.getElementById("profileSection");
-const routineSection = document.getElementById("routineSection");
-
-const loginBtn = document.getElementById("loginBtn");
-const saveProfileBtn = document.getElementById("saveProfileBtn");
-const routineBtn = document.getElementById("routineBtn");
-
-const routineDiv = document.getElementById("routine");
-
-// --------- LOGIN ---------
-loginBtn.addEventListener("click", () => {
-  const user = document.getElementById("user").value;
-  const pass = document.getElementById("pass").value;
-
-  if (!user || !pass) {
-    alert("Completa usuario y contraseña");
-    return;
+  // Mostrar la pantalla solicitada
+  const target = document.getElementById(screenId);
+  if (target) {
+    target.classList.add("active");
   }
-
-  localStorage.setItem("user", user);
-  showApp();
-});
-
-function showApp() {
-  loginSection.classList.add("hidden");
-  profileSection.classList.remove("hidden");
-  routineSection.classList.remove("hidden");
 }
 
-if (localStorage.getItem("user")) {
-  showApp();
-}
-
-// --------- PERFIL ---------
-saveProfileBtn.addEventListener("click", () => {
-  const profile = {
-    age: document.getElementById("age").value,
-    weight: document.getElementById("weight").value,
-    height: document.getElementById("height").value,
-    goal: document.getElementById("goal").value
-  };
-
-  if (!profile.age || !profile.weight || !profile.height) {
-    alert("Completa todos los datos del perfil");
-    return;
-  }
-
-  localStorage.setItem("profile", JSON.stringify(profile));
-  alert("Perfil guardado correctamente");
-});
-
-// --------- GENERAR RUTINA (IA SIMPLE) ---------
-routineBtn.addEventListener("click", generateRoutine);
-
-function generateRoutine() {
-  const profile = JSON.parse(localStorage.getItem("profile"));
-
-  if (!profile) {
-    alert("Primero guarda tu perfil");
-    return;
-  }
-
-  const level = parseInt(document.getElementById("level").value);
-  routineDiv.innerHTML = "";
-
-  const routines = {
-    volumen: [
-      ["Press banca", "bench"],
-      ["Sentadilla", "bench"],
-      ["Remo", "bench"]
-    ],
-    definicion: [
-      ["Flexiones", "bench"],
-      ["Zancadas", "bench"],
-      ["Plancha", "bench"]
-    ],
-    cardio: [
-      ["Cardio básico", "bench"],
-      ["Saltos", "bench"]
+/* ===============================
+   DATOS DE RUTINAS
+================================ */
+const ROUTINES = [
+  {
+    name: "Rutina Full Body",
+    exercises: [
+      {
+        name: "Flexiones",
+        reps: "3 x 15",
+        image: IMAGES.pushup
+      },
+      {
+        name: "Sentadillas",
+        reps: "3 x 20",
+        image: IMAGES.squat
+      }
     ]
-  };
-
-  const selectedRoutine = routines[profile.goal];
-
-  if (!selectedRoutine) {
-    routineDiv.innerHTML = "<p>No hay rutina disponible</p>";
-    return;
+  },
+  {
+    name: "Pecho y Tríceps",
+    exercises: [
+      {
+        name: "Press banca",
+        reps: "4 x 10",
+        image: IMAGES.bench
+      },
+      {
+        name: "Flexiones",
+        reps: "3 x 15",
+        image: IMAGES.pushup
+      }
+    ]
   }
+];
 
-  selectedRoutine.forEach(exercise => {
-    const card = document.createElement("div");
-    card.className = "exercise";
-    card.innerHTML = `
-      <img src="${IMAGES[exercise[1]]}" alt="${exercise[0]}">
-      <div>
-        <strong>${exercise[0]}</strong><br>
-        ${level * 2} series
-      </div>
-    `;
-    routineDiv.appendChild(card);
+/* ===============================
+   CARGAR RUTINAS EN PANTALLA
+================================ */
+function loadRoutines() {
+  const container = document.getElementById("routine-list");
+
+  // Seguridad: si no existe, no hace nada
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  ROUTINES.forEach(routine => {
+    // Título de la rutina
+    const title = document.createElement("h3");
+    title.textContent = routine.name;
+    container.appendChild(title);
+
+    // Ejercicios
+    routine.exercises.forEach(exercise => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <img src="${exercise.image}" alt="${exercise.name}">
+        <div>
+          <strong>${exercise.name}</strong><br>
+          ${exercise.reps}
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
   });
 }
+
+/* ===============================
+   INICIALIZACIÓN GENERAL
+================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  // Mostrar inicio por defecto
+  showScreen("home");
+
+  // Cargar rutinas
+  loadRoutines();
+});
