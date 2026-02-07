@@ -52,6 +52,7 @@ function initNav() {
   document.getElementById("btn-home").onclick = () => showScreen("home");
   document.getElementById("btn-routines").onclick = () => showScreen("routines");
   document.getElementById("btn-stats").onclick = () => showScreen("stats");
+   document.getElementById("btn-profile").onclick = () => showScreen("profile");
   document.getElementById("btn-logout").onclick = logout;
 }
 
