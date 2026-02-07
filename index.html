@@ -21,7 +21,24 @@
 </nav>
 
 <main>
+<section id="profile" class="screen">
+  <h2>Perfil</h2>
 
+  <input id="age" type="number" placeholder="Edad">
+  <input id="weight" type="number" placeholder="Peso (kg)">
+  <input id="height" type="number" placeholder="Estatura (cm)">
+
+  <select id="goal">
+    <option value="volumen">Volumen</option>
+    <option value="definicion">Definición</option>
+    <option value="cardio">Cardio</option>
+  </select>
+
+  <button onclick="saveProfile()">Guardar perfil</button>
+  <p id="profile-msg"></p>
+</section>
+
+  
   <!-- LOGIN -->
   <section id="login" class="screen active">
     <h2>Iniciar sesión</h2>
