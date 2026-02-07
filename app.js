@@ -85,7 +85,18 @@ function loadRoutines() {
 
     r.exercises.forEach(e => {
       const card = document.createElement("div");
-      card.className = "card";
+card.className = "card";
+card.setAttribute("draggable", "true");
+
+/* DRAG EVENTS */
+card.addEventListener("dragstart", () => {
+  card.classList.add("dragging");
+});
+
+card.addEventListener("dragend", () => {
+  card.classList.remove("dragging");
+});
+
       card.innerHTML = `
         <img src="${e.image}">
         <div>
