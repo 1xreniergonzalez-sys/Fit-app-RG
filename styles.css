@@ -95,3 +95,12 @@ button {
 .card:active {
   transform: scale(0.97);
 }
+/* Drag & Drop */
+.card.dragging {
+  opacity: 0.5;
+}
+
+.card {
+  cursor: grab;
+}
+
