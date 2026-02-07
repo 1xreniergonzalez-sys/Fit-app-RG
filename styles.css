@@ -79,3 +79,19 @@ button {
   height: 60px;
   object-fit: contain;
 }
+.screen {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.card {
+  transition: transform 0.2s ease;
+}
+
+.card:active {
+  transform: scale(0.97);
+}
